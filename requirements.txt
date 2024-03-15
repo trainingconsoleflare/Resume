@@ -1,2 +1,2 @@
-docx==1.2.0
+docx
 streamlit==1.32.0
