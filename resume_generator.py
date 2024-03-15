@@ -43,7 +43,7 @@ def generate_resume(name, email, phone, linkedin, summary, programming_languages
     cell.text = 'Skills'
     cell.paragraphs[0].runs[0].font.bold = True
     cell = table.cell(5, 0)
-    cell.text = f"Programming Languages:{programming_languages}\nBusiness Intelligence:{business_intelligence}\nData Engineering:{data_engineering}\nOther Platforms:{other_platforms}"
+    cell.text = f"• Programming Languages:{programming_languages}\n• Business Intelligence:{business_intelligence}\n• Data Engineering:{data_engineering}\n• Other Platforms:{other_platforms}"
 
     # Specify the absolute path to save the document
     file_path = os.path.join(os.getcwd(), 'resume.docx')
