@@ -4,6 +4,7 @@ from docx.shared import Pt, Mm
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import os
 
+
 def generate_resume(name, email, phone, linkedin, summary, programming_languages, business_intelligence, data_engineering, other_platforms):
     doc = Document()
 
@@ -42,7 +43,7 @@ def generate_resume(name, email, phone, linkedin, summary, programming_languages
     cell.text = 'Skills'
     cell.paragraphs[0].runs[0].font.bold = True
     cell = table.cell(5, 0)
-    cell.text = f"Programming Languages:\n{programming_languages}\n\nBusiness Intelligence:\n{business_intelligence}\n\nData Engineering:\n{data_engineering}\n\nOther Platforms:\n{other_platforms}"
+    cell.text = f"Programming Languages:{programming_languages}\nBusiness Intelligence:{business_intelligence}\nData Engineering:{data_engineering}\nOther Platforms:{other_platforms}"
 
     # Specify the absolute path to save the document
     file_path = os.path.join(os.getcwd(), 'resume.docx')
