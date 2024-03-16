@@ -5,7 +5,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import os
 
 
-def generate_resume(name, email, phone, linkedin, summary, programming_languages, business_intelligence, data_engineering, other_platforms, profile, company_name, jd,degree,university,certifications,additional_skills):
+def generate_resume(name, email, phone, linkedin, summary, programming_languages,libraries, business_intelligence, data_engineering, other_platforms, profile, company_name, jd,degree,university,certifications,additional_skills):
     doc = Document()
 
     # Set narrow margins
@@ -43,7 +43,7 @@ def generate_resume(name, email, phone, linkedin, summary, programming_languages
     cell.text = 'Skills'
     cell.paragraphs[0].runs[0].font.bold = True
     cell = table.cell(5, 0)
-    cell.text = f"• Programming Languages:{','.join(programming_languages)}\n• Business Intelligence:{business_intelligence}\n• Data Engineering:{data_engineering}\n• Other Platforms:{other_platforms}"
+    cell.text = f"• Programming Languages:{','.join(programming_languages)}\n• Libraries:{','.join(libraries)}\n• Business Intelligence:{','.join(business_intelligence)}\n• Data Engineering:{','.join(data_engineering)}\n• Other Platforms:{other_platforms}"
 
     # Company and Profile Info
     cell = table.cell(6, 0)
@@ -92,13 +92,14 @@ def main():
     phone = st.text_input('Phone')
     linkedin = st.text_input('LinkedIn')
     summary = st.text_area('Summary',placeholder='Write a Brief Summary ')
-    programming_languages = st.multiselect(label='Programming Languages',options=['Python','Numpy','Pandas','Matplotlib','Seaborn'])
-    business_intelligence = st.text_area('Business Intelligence')
-    data_engineering = st.text_area('Data Engineering')
-    other_platforms = st.text_area('Other Platforms')
+    programming_languages = st.multiselect(label='Programming Languages',options=['Python','SQL','MS Sql Server','MySQL'])
+    libraries = st.multiselect(label='Libraries',options=['Numpy','Pandas','Matplotlib','Seaborn','Plotly','OpenCV'])
+    business_intelligence = st.multiselect(label='Business Intelligence',options=['Power BI','Tableau','Zoho','Quicksight','Google Studio','Excel'])
+    data_engineering = st.multiselect(label='Data Engineering',options=['SQL', 'ETL', 'SSIS', 'Data Warehousing', 'Azure Data Factory','Data Mining','Data Wrangling'])
+    other_platforms = st.text_input('Other Platforms')
     profile = st.text_input('Previous Profile')
     company_name = st.text_input('Company Name')
-    jd =st.text_area('Explain Jo Description')
+    jd =st.text_area('Explain Job Description')
     degree = st.text_input('Education')
     university = st.text_input('University')
     certifications = st.text_area('Certifications')
@@ -109,8 +110,8 @@ def main():
 
     # Generate resume
     if st.button('Generate Resume'):
-        if name and email and phone and linkedin and summary and programming_languages and business_intelligence and data_engineering and other_platforms and company_name and profile and jd and degree and university and certifications and additional_skills:
-            file_path = generate_resume(name, email, phone, linkedin, summary, programming_languages, business_intelligence, data_engineering, other_platforms,profile,company_name,jd,degree,university,certifications,additional_skills)
+        if name and email and phone and linkedin and summary and programming_languages and libraries and business_intelligence and data_engineering and other_platforms and company_name and profile and jd and degree and university and certifications and additional_skills:
+            file_path = generate_resume(name, email, phone, linkedin, summary, programming_languages,libraries, business_intelligence, data_engineering, other_platforms,profile,company_name,jd,degree,university,certifications,additional_skills)
             st.success('Resume generated successfully!')
             st.download_button(
                 label="Download your resume",
