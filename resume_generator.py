@@ -39,8 +39,8 @@ def generate_resume(name, email, phone, linkedin, summary, programming_languages
     cell.text = 'Summary'
     cell.paragraphs[0].runs[0].font.bold = True
     cell = table.cell(3, 0)
-    cell.text = f"""I am an experienced professional with a background in {profile} at {company_name}.They have expertise in {', '.join(programming_languages)}, {', '.join(business_intelligence)},{', '.join(data_engineering)}, and other platforms. {summary}"""
-
+    cell.text = summary
+                      
     # Skills
     cell = table.cell(4, 0)
     cell.text = 'Skills'
