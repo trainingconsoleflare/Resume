@@ -5,7 +5,7 @@ from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import os
 
 
-def generate_resume(name, email, phone, linkedin, summary, programming_languages, business_intelligence, data_engineering, other_platforms, profile, company_name, jd):
+def generate_resume(name, email, phone, linkedin, summary, programming_languages, business_intelligence, data_engineering, other_platforms, profile, company_name, jd,degree,university,certifications):
     doc = Document()
 
     # Set narrow margins
@@ -17,7 +17,7 @@ def generate_resume(name, email, phone, linkedin, summary, programming_languages
         section.right_margin = Mm(10)
 
     # Add a table for the entire resume
-    table = doc.add_table(rows=12, cols=1)  # Increased rows to accommodate additional content
+    table = doc.add_table(rows=18, cols=1)  # Increased rows to accommodate additional content
     table.style = 'Table Grid'
 
     # Name
@@ -57,6 +57,20 @@ def generate_resume(name, email, phone, linkedin, summary, programming_languages
     # cell.paragraphs[0].runs[0].font.bold = True
     cell.text = '\n'.join(['• '+j for j in jd.split("\n")])
 
+    #Education
+    cell = table.cell(9, 0)
+    cell.text = 'Education'
+    cell.paragraphs[0].runs[0].font.bold = True
+    cell = table.cell(10, 0)
+    cell.text = f'{degree}\n{university}'
+
+    cell = table.cell(11, 0)
+    cell.text = 'Certifications'
+    cell.paragraphs[0].runs[0].font.bold = True
+    cell = table.cell(12, 0)
+    cell.text = '\n'.join(['• '+c for c in certifications.split("\n")])
+
+
     # Specify the absolute path to save the document
     file_path = os.path.join(os.getcwd(), 'resume.docx')
     doc.save(file_path)
@@ -78,13 +92,17 @@ def main():
     profile = st.text_input('Previous Profile')
     company_name = st.text_input('Company Name')
     jd =st.text_area('Explain Jo Description')
+    degree = st.text_input('Education')
+    university = st.text_input('University')
+    certifications = st.text_area('Certifications')
+
 
 
 
     # Generate resume
     if st.button('Generate Resume'):
-        if name and email and phone and linkedin and summary and programming_languages and business_intelligence and data_engineering and other_platforms and company_name and profile and jd:
-            file_path = generate_resume(name, email, phone, linkedin, summary, programming_languages, business_intelligence, data_engineering, other_platforms,profile,company_name,jd)
+        if name and email and phone and linkedin and summary and programming_languages and business_intelligence and data_engineering and other_platforms and company_name and profile and jd and degree and university and certifications:
+            file_path = generate_resume(name, email, phone, linkedin, summary, programming_languages, business_intelligence, data_engineering, other_platforms,profile,company_name,jd,degree,university,certifications)
             st.success('Resume generated successfully!')
             st.download_button(
                 label="Download your resume",
