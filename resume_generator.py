@@ -43,7 +43,7 @@ def generate_resume(name, email, phone, linkedin, summary, programming_languages
     cell.text = 'Skills'
     cell.paragraphs[0].runs[0].font.bold = True
     cell = table.cell(5, 0)
-    cell.text = f"• Programming Languages:{programming_languages}\n• Business Intelligence:{business_intelligence}\n• Data Engineering:{data_engineering}\n• Other Platforms:{other_platforms}"
+    cell.text = f"• Programming Languages:{','.join(programming_languages)}\n• Business Intelligence:{business_intelligence}\n• Data Engineering:{data_engineering}\n• Other Platforms:{other_platforms}"
 
     # Company and Profile Info
     cell = table.cell(6, 0)
@@ -91,8 +91,8 @@ def main():
     email = st.text_input('Email')
     phone = st.text_input('Phone')
     linkedin = st.text_input('LinkedIn')
-    summary = st.text_area('Summary')
-    programming_languages = st.text_area('Programming Languages')
+    summary = st.text_area('Summary',placeholder='Write a Brief Summary ')
+    programming_languages = st.multiselect(label='Programming Languages',options=['Python','Numpy','Pandas','Matplotlib','Seaborn'])
     business_intelligence = st.text_area('Business Intelligence')
     data_engineering = st.text_area('Data Engineering')
     other_platforms = st.text_area('Other Platforms')
