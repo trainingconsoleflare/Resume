@@ -3,7 +3,6 @@ from docx import Document
 from docx.shared import Pt, Mm
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import os
-import openai  # Import OpenAI Python client
 
 
 
