@@ -1,9 +1,8 @@
 import streamlit as st
 from docx import Document
-from docx.shared import Mm, Pt
+from docx.shared import Mm, Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import os
-
 
 def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summary,
                     programming_languages, libraries, business_intelligence, data_engineering,
@@ -20,13 +19,21 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
         section.left_margin = Mm(10)
         section.right_margin = Mm(10)
 
+    # Set a professional font
+    style = doc.styles['Normal']
+    font = style.font
+    font.name = 'Calibri'
+    font.size = Pt(11)
+
     # Helper function to add and style cells
-    def add_and_style_cell(text, bold=False, centered=False, font_size=12):
+    def add_and_style_cell(text, bold=False, centered=False, font_size=12, color=None):
         cell = table.add_row().cells[0]  # Add a new row and get the first cell
         paragraph = cell.paragraphs[0]
         run = paragraph.add_run(text)
         run.bold = bold
         run.font.size = Pt(font_size)
+        if color:
+            run.font.color.rgb = RGBColor(31, 78, 121)  # Dark blue color for headers
         if centered:
             paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
@@ -35,15 +42,15 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
     table.style = 'Table Grid'
 
     # Add resume content
-    add_and_style_cell(name, bold=True, centered=True, font_size=14)
-    add_and_style_cell('Data Analyst', centered=True)
+    add_and_style_cell(name, bold=True, centered=True, font_size=14, color=True)
+    add_and_style_cell('Data Analyst', centered=True, color=True)
     contact_info = f"{city}, {area_name}, {zipcode} | {email} | {phone} | {linkedin}"
     add_and_style_cell(contact_info, centered=True)
-    add_and_style_cell('Summary', bold=True)
+    add_and_style_cell('Summary', bold=True, color=True)
     add_and_style_cell(summary)
 
     # Dynamic content from user input (skills, experience, etc.)
-    add_and_style_cell('Technical Skills', bold=True)
+    add_and_style_cell('Technical Skills', bold=True, color=True)
     skill_lines = [f"Programming Languages: {', '.join(programming_languages)}",
                    f"Libraries: {', '.join(libraries)}",
                    f"Business Intelligence: {', '.join(business_intelligence)}",
@@ -54,49 +61,50 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
                    f"Database Management Systems: {', '.join(database_management)}",
                    f"Cloud Platforms: {', '.join(cloud_platforms)}",
                    f"Machine Learning Libraries: {', '.join(machine_learning)}"]
-    # Filter out empty lines
-    skill_lines = [line for line in skill_lines if not line.endswith(': ')]
+    skill_lines = [line for line in skill_lines if not line.endswith(': ')]  # Filter out empty lines
     skills_text = '\n'.join(skill_lines)
     add_and_style_cell(skills_text)
 
-    add_and_style_cell('Professional Experience', bold=True)
+    add_and_style_cell('Professional Experience', bold=True, color=True)
     experience_text = f"{profile} at {company_name} ({start_date.strftime('%B %Y')} - {'Present' if is_current_job else end_date.strftime('%B %Y')})"
     add_and_style_cell(experience_text)
     add_and_style_cell(jd)  # Assuming 'jd' contains the job description
 
-    add_and_style_cell('Education', bold=True)
+    add_and_style_cell('Education', bold=True, color=True)
     education_text = f"{degree} from {university}"
     add_and_style_cell(education_text)
 
     # Handle certifications and additional skills similarly
-    add_and_style_cell('Certifications', bold=True)
-    for cert in certifications.split('\n'):
-        add_and_style_cell(cert)
+    add_and_style_cell('Certifications', bold=True, color=True)
+    certs = certifications.split('\n')
+    cer = '\n'.join([cert for cert in certs])
+    add_and_style_cell(cer)
 
-    add_and_style_cell('Additional Skills', bold=True)
-    for skill in additional_skills.split('\n'):
-        add_and_style_cell(skill)
+    add_and_style_cell('Additional Skills', bold=True, color=True)
+    skills = additional_skills.split('\n')
+    skil = '\n'.join([skill for skill in skills])
+    add_and_style_cell(skil)
 
     # Save the document
     file_path = os.path.join(os.getcwd(), 'resume.docx')
     doc.save(file_path)
     return file_path
 
-
-
 def main():
     st.title('ATS Friendly Resume Generator')
 
     with st.form("resume_form"):
-        with st.expander("Personal Details"):
-            name = st.text_input("Name")
-            city = st.text_input("City")
-            area_name = st.text_input("Area")
-            zipcode = st.text_input("Zipcode")
-            email = st.text_input("Email")
-            phone = st.text_input("Phone")
-            linkedin = st.text_input("LinkedIn")
-            summary = st.text_area("Summary", placeholder="Write a Brief Summary")
+
+        # UI for input fields
+        with st.expander('Personal Details:'):
+            name = st.text_input('Name')
+            city = st.text_input('City')
+            area_name = st.text_input('Area')
+            zipcode = st.text_input('Zipcode')
+            email = st.text_input('Email')
+            phone = st.text_input('Phone')
+            linkedin = st.text_input('LinkedIn')
+            summary = st.text_area('Summary', placeholder='Write a Brief Summary')
         with st.expander('Technical Skills'):
             statistical_methods = st.multiselect(label='Statistical methods',
                                                  options=['Statistical Techniques', 'Descriptive Statistics',
@@ -119,22 +127,20 @@ def main():
                                                       'Azure SQL Database', 'AWS', 'GCP'])
             big_data = st.multiselect(label='Big Data Tools', options=['Apache Spark', 'PySpark', 'Databricks'])
             machine_learning = st.multiselect(label='Machine Learning', options=['Scikit-learn'])
-            profile = st.text_input('Previous Profile')
         with st.expander('Professional Experience'):
+            profile = st.text_input('Previous Profile')
             company_name = st.text_input('Company Name')
             # Input fields for start and end date, and a checkbox for the current job
             start_date = st.date_input("Start Date")
-            end_date = st.date_input("End Date")
             is_current_job = st.checkbox("Currently Working Here")
+            end_date = st.date_input("End Date")
+
             jd = st.text_area('Explain Job Description')
         with st.expander('Education'):
             degree = st.text_input('Education')
             university = st.text_input('University')
             certifications = st.text_area('Certifications')
             additional_skills = st.text_area('Additional Skills')
-
-        # Other expanders for Skills, Experience, etc.
-        # Make sure to collect all required information as done in the Personal Details section
 
         submitted = st.form_submit_button("Generate Resume")
 
@@ -157,17 +163,6 @@ def main():
             st.download_button(label="Download Resume", data=file, file_name="resume.docx",
                                mime='application/vnd.openxmlformats-officedocument.wordprocessingml.document')
 
-
 if __name__ == '__main__':
     main()
-
-
-
-
-
-
-
-
-
-
 
