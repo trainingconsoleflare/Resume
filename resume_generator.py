@@ -1,9 +1,28 @@
+
+'-----------------------------------------------------------------------------'
 import streamlit as st
 from docx import Document
 from docx.shared import Mm, Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import os
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
 from datetime import datetime
+
+# Function to set a cell's borders to None
+def remove_borders_from_cell(cell):
+    # Create a new property element for the cell
+    tcPr = cell._element.get_or_add_tcPr()
+
+    # Specify the border elements to be removed (nil means no border)
+    for border in ['top', 'left', 'bottom', 'right', 'insideH', 'insideV']:
+        tag = 'w:' + border
+        element = OxmlElement(tag)
+        element.set(qn('w:val'), 'nil')
+        element.set(qn('w:sz'), '0')
+        element.set(qn('w:space'), '0')
+        element.set(qn('w:color'), 'auto')
+        tcPr.append(element)
 
 
 def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summary,
@@ -40,19 +59,19 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
             paragraph.alignment = WD_PARAGRAPH_ALIGNMENT.CENTER
 
     # Initially, create a table with a single row for the header
-    table = doc.add_table(rows=1, cols=1)
+    table = doc.add_table(rows=1,cols=1)
     table.style = 'Table Grid'
 
     # Add resume content
-    add_and_style_cell(name, bold=True, centered=True, font_size=14, color=True)
+    add_and_style_cell(name, bold=True, centered=True, font_size=18, color=True)
     add_and_style_cell('Data Analyst', centered=True, color=True)
     contact_info = f"{city}, {area_name}, {zipcode} | {email} | {phone} | {linkedin}"
     add_and_style_cell(contact_info, centered=True)
-    add_and_style_cell('Summary', bold=True, color=True)
-    add_and_style_cell(summary)
+    add_and_style_cell('SUMMARY', bold=True, color=True,font_size=12)
+    add_and_style_cell(summary,font_size=9)
 
     # Dynamic content from user input (skills, experience, etc.)
-    add_and_style_cell('Technical Skills', bold=True, color=True)
+    add_and_style_cell('TECHNICAL SKILLS', bold=True, color=True)
     skill_lines = [f"Programming Languages: {', '.join(programming_languages)}",
                    f"Libraries: {', '.join(libraries)}",
                    f"Business Intelligence: {', '.join(business_intelligence)}",
@@ -66,28 +85,37 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
     skill_lines = [f'• {line}' for line in skill_lines]
     # skill_lines = [line for line in skill_lines if not line.endswith(': ')]  # Filter out empty lines
     skills_text = '\n'.join(skill_lines)
-    add_and_style_cell(skills_text)
+    add_and_style_cell(skills_text,font_size=9)
 
-    add_and_style_cell('Professional Experience', bold=True, color=True)
+    add_and_style_cell('PROFESSIONAL EXPERIENCE', bold=True, color=True,font_size=12)
     experience_text = f"{profile} at {company_name} ({start_date.strftime('%B %Y')} - {'Present' if is_current_job else end_date.strftime('%B %Y')})"
     add_and_style_cell(experience_text)
     job_desc = '\n'.join([f'• {j}' for j in jd.split('\n')])
-    add_and_style_cell(job_desc)  # Assuming 'jd' contains the job description
+    add_and_style_cell(job_desc,font_size=9)  # Assuming 'jd' contains the job description
 
-    add_and_style_cell('Education', bold=True, color=True)
+    add_and_style_cell('EDUCATION', bold=True, color=True,font_size=12)
     education_text = f"{degree} from {university}"
-    add_and_style_cell(education_text)
+    add_and_style_cell(education_text,font_size=9)
 
     # Handle certifications and additional skills similarly
-    add_and_style_cell('Certifications', bold=True, color=True)
+    add_and_style_cell('CERTIFICATIONS', bold=True, color=True,font_size=12)
     certs = certifications.split('\n')
     cer = '\n'.join([f'• {cert}' for cert in certs])
-    add_and_style_cell(cer)
+    add_and_style_cell(cer,font_size=9)
 
     add_and_style_cell('Additional Skills', bold=True, color=True)
     skills = additional_skills.split('\n')
     skil = '\n'.join([f'• {skill}' for skill in skills])
-    add_and_style_cell(skil)
+    add_and_style_cell(skil,font_size=9)
+
+    # Apply the no border function to each cell in the table
+    for row in table.rows:
+            for cell in row.cells:
+                remove_borders_from_cell(cell)
+    row = table.rows[0]._element
+    row.getparent().remove(row)
+
+
 
     # Save the document
     file_path = os.path.join(os.getcwd(), 'resume.docx')
