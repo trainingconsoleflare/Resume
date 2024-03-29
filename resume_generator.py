@@ -136,7 +136,7 @@ def main():
             phone = st.text_input('Phone')
             linkedin = st.text_input('LinkedIn')
             summary = st.text_area('Summary', placeholder='Write a Brief Summary')
-        with st.expander('Technical Skills'):
+        with st.expander('Skills'):
             statistical_methods = st.multiselect(label='Statistical methods',
                                                  options=['Statistical Techniques', 'Descriptive Statistics',
                                                           'Inferential Statistics', 'Probability Distribution',
