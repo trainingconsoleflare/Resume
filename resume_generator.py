@@ -3,6 +3,8 @@ from docx import Document
 from docx.shared import Mm, Pt, RGBColor
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
 import os
+from datetime import datetime
+
 
 def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summary,
                     programming_languages, libraries, business_intelligence, data_engineering,
@@ -61,14 +63,16 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
                    f"Database Management Systems: {', '.join(database_management)}",
                    f"Cloud Platforms: {', '.join(cloud_platforms)}",
                    f"Machine Learning Libraries: {', '.join(machine_learning)}"]
-    skill_lines = [line for line in skill_lines if not line.endswith(': ')]  # Filter out empty lines
+    skill_lines = [f'• {line}' for line in skill_lines]
+    # skill_lines = [line for line in skill_lines if not line.endswith(': ')]  # Filter out empty lines
     skills_text = '\n'.join(skill_lines)
     add_and_style_cell(skills_text)
 
     add_and_style_cell('Professional Experience', bold=True, color=True)
     experience_text = f"{profile} at {company_name} ({start_date.strftime('%B %Y')} - {'Present' if is_current_job else end_date.strftime('%B %Y')})"
     add_and_style_cell(experience_text)
-    add_and_style_cell(jd)  # Assuming 'jd' contains the job description
+    job_desc = '\n'.join([f'• {j}' for j in jd.split('\n')])
+    add_and_style_cell(job_desc)  # Assuming 'jd' contains the job description
 
     add_and_style_cell('Education', bold=True, color=True)
     education_text = f"{degree} from {university}"
@@ -77,12 +81,12 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
     # Handle certifications and additional skills similarly
     add_and_style_cell('Certifications', bold=True, color=True)
     certs = certifications.split('\n')
-    cer = '\n'.join([cert for cert in certs])
+    cer = '\n'.join([f'• {cert}' for cert in certs])
     add_and_style_cell(cer)
 
     add_and_style_cell('Additional Skills', bold=True, color=True)
     skills = additional_skills.split('\n')
-    skil = '\n'.join([skill for skill in skills])
+    skil = '\n'.join([f'• {skill}' for skill in skills])
     add_and_style_cell(skil)
 
     # Save the document
@@ -92,7 +96,6 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
 
 def main():
     st.title('ATS Friendly Resume Generator')
-
     with st.form("resume_form"):
 
         # UI for input fields
@@ -165,4 +168,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
