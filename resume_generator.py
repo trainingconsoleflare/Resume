@@ -98,7 +98,7 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
     add_and_style_cell(name, bold=True, centered=True, font_size=18, color=True)
     add_and_style_cell('Data Analyst', centered=True, color=True)
     contact_info = f"{city}, {area_name}, {zipcode} | {email} | {phone} | {linkedin}"
-    add_and_style_cell(contact_info, centered=True)
+    add_and_style_cell(contact_info, centered=True,font_size=9)
     add_and_style_cell('SUMMARY', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True,is_border=True)
     add_and_style_cell(summary,font_size=9)
 
