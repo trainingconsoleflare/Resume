@@ -18,7 +18,7 @@ def add_bottom_border_to_cell(cell):
     bottomBorder.set(qn('w:val'), 'single')  # Change 'single' to other styles if needed
     bottomBorder.set(qn('w:sz'), '4')  # Border size (in eighths of a point)
     bottomBorder.set(qn('w:space'), '0')  # No space between borders and content
-    bottomBorder.set(qn('w:color'), 'auto')  # Auto color or specify hex color
+    bottomBorder.set(qn('w:color'), 'blue')  # Auto color or specify hex color
     tcBorders.append(bottomBorder)
     tcPr.append(tcBorders)
 
@@ -98,12 +98,12 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
     add_and_style_cell(name, bold=True, centered=True, font_size=18, color=True)
     add_and_style_cell('Data Analyst', centered=True, color=True)
     contact_info = f"{city}, {area_name}, {zipcode} | {email} | {phone} | {linkedin}"
-    add_and_style_cell(contact_info, centered=True,font_size=9)
+    add_and_style_cell(contact_info, centered=True,font_size=9,color='blue')
     add_and_style_cell('SUMMARY', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True,is_border=True)
     add_and_style_cell(summary,font_size=9)
 
     # Dynamic content from user input (skills, experience, etc.)
-    add_and_style_cell('TECHNICAL SKILLS', bold=True, color=True,is_heading=True,align_bottom_left=True)
+    add_and_style_cell('TECHNICAL SKILLS', bold=True, color=True,is_heading=True,align_bottom_left=True,is_border=True)
     skill_lines = [f"Programming Languages: {', '.join(programming_languages)}",
                    f"Libraries: {', '.join(libraries)}",
                    f"Business Intelligence: {', '.join(business_intelligence)}",
@@ -119,23 +119,23 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
     skills_text = '\n'.join(skill_lines)
     add_and_style_cell(skills_text,font_size=9)
 
-    add_and_style_cell('PROFESSIONAL EXPERIENCE', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True)
+    add_and_style_cell('PROFESSIONAL EXPERIENCE', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True,is_border=True)
     experience_text = f"{profile} at {company_name} ({start_date.strftime('%B %Y')} - {'Present' if is_current_job else end_date.strftime('%B %Y')})"
     add_and_style_cell(experience_text)
     job_desc = '\n'.join([f'• {j}' for j in jd.split('\n')])
     add_and_style_cell(job_desc,font_size=9)  # Assuming 'jd' contains the job description
 
-    add_and_style_cell('EDUCATION', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True)
+    add_and_style_cell('EDUCATION', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True,is_border=True)
     education_text = f"{degree} from {university}"
     add_and_style_cell(education_text,font_size=9)
 
     # Handle certifications and additional skills similarly
-    add_and_style_cell('CERTIFICATIONS', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True)
+    add_and_style_cell('CERTIFICATIONS', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True,is_border=True)
     certs = certifications.split('\n')
     cer = '\n'.join([f'• {cert}' for cert in certs])
     add_and_style_cell(cer,font_size=9)
 
-    add_and_style_cell('Additional Skills', bold=True, color=True,is_heading=True,align_bottom_left=True)
+    add_and_style_cell('ADDITIONAL SKILLS', bold=True, color=True,is_heading=True,align_bottom_left=True,is_border=True)
     skills = additional_skills.split('\n')
     skil = '\n'.join([f'• {skill}' for skill in skills])
     add_and_style_cell(skil,font_size=9)
@@ -144,7 +144,7 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
 
     # Assuming you have a list of section headings for which you want to keep the bottom border
     section_headings = ["SUMMARY", "TECHNICAL SKILLS", "PROFESSIONAL EXPERIENCE", "EDUCATION", "CERTIFICATIONS",
-                        "Additional Skills"]
+                        "ADDITIONAL SKILLS"]
 
     # Loop through each cell in the table and remove borders accordingly
     for row in table.rows:
