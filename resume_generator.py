@@ -215,7 +215,7 @@ def main():
             big_data = st.multiselect(label='Big Data Tools', options=['Apache Spark', 'PySpark', 'Databricks'])
             machine_learning = st.multiselect(label='Machine Learning', options=['Scikit-learn'])
         experience_details = []
-        exp = int(st.number_input('Experience Count : '))+1
+        exp = int(st.number_input('Experience Count : ',step=1))+1
         for i in range(1, exp):  # Allows for up to 3 experiences
             with st.expander(f'Professional Experience {i}'):
                 profile = st.text_input(f'Profile {i}', key=f'profile_{i}')
