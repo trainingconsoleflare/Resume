@@ -53,10 +53,10 @@ def remove_borders_from_cell(cell, keep_bottom=False):
 
 def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summary,
                     programming_languages, libraries, business_intelligence, data_engineering,
-                    big_data, profile, company_name, start_date, end_date, is_current_job, jd,
+                    big_data,
                     degree, university, certifications, additional_skills, statistical_methods,
                     data_collection, database_management, cloud_platforms, machine_learning,
-                    experience_details):
+                    *experience_details):
     """Generates an ATS-friendly resume with a visually appealing layout."""
     doc = Document()
 
@@ -239,10 +239,10 @@ def main():
         # Make sure to pass all collected information to the function
         file_path = generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summary,
                     programming_languages, libraries, business_intelligence, data_engineering,
-                    big_data, profile, company_name, start_date, end_date, is_current_job, jd,
+                    big_data,
                     degree, university, certifications, additional_skills, statistical_methods,
                     data_collection, database_management, cloud_platforms, machine_learning,
-                    experience_details)
+                    *experience_details)
 
         st.session_state['resume_path'] = file_path  # Store the path in session state
 
