@@ -125,7 +125,7 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
                    f"Machine Learning Libraries: {', '.join(machine_learning)}"]
     skill_lines = [f'• {line}' for line in skill_lines]
     # skill_lines = [line for line in skill_lines if not line.endswith(': ')]  # Filter out empty lines
-    skills_text = '\n\n'.join(skill_lines)
+    skills_text = '\n'.join(skill_lines)
     add_and_style_cell(skills_text)
 
     add_and_style_cell('PROFESSIONAL EXPERIENCE', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True,is_border=True)
@@ -134,7 +134,7 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
         add_and_style_cell(f'{company_name}', bold=True, color=False, font_size=11, is_heading=False,
                            align_bottom_left=True, is_border=True)
         add_and_style_cell(experience_text)
-        job_desc = '\n\n'.join([f'• {j}' for j in jd.split('\n')])
+        job_desc = '\n'.join([f'• {j}' for j in jd.split('\n')])
         add_and_style_cell(job_desc)  # Assuming 'jd' contains the job description
 
     add_and_style_cell('EDUCATION', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True,is_border=True)
@@ -144,12 +144,12 @@ def generate_resume(name, city, area_name, zipcode, email, phone, linkedin, summ
     # Handle certifications and additional skills similarly
     add_and_style_cell('CERTIFICATIONS', bold=True, color=True,font_size=12,is_heading=True,align_bottom_left=True,is_border=True)
     certs = certifications.split('\n')
-    cer = '\n\n'.join([f'• {cert}' for cert in certs])
+    cer = '\n'.join([f'• {cert}' for cert in certs])
     add_and_style_cell(cer)
 
     add_and_style_cell('ADDITIONAL SKILLS', bold=True, color=True,is_heading=True,align_bottom_left=True,is_border=True)
     skills = additional_skills.split('\n')
-    skil = '\n\n'.join([f'• {skill}' for skill in skills])
+    skil = '\n'.join([f'• {skill}' for skill in skills])
     add_and_style_cell(skil)
 
     # Apply the no border function to each cell in the table
